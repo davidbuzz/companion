@@ -51,7 +51,6 @@
     <Content Include="static\swapper.png" />
     <Content Include="static\testtriangle.png" />
     <Content Include="static\wifi.png" />
-    <Content Include="timestamp.sh" />
     <Content Include="tools\deploy10.bat" />
     <Content Include="tools\etc-supervisor-conf.d-WebConfigServer.conf" />
     <Content Include="tools\WebConfigServer.json" />
@@ -91,7 +90,6 @@
     <Compile Include="serial_utils.py" />
     <Compile Include="SimplePriorityQueue.py" />
     <Compile Include="stdoutcontext.py" />
-    <Compile Include="test.py" />
     <Compile Include="tools\heartbeat.py" />
     <Compile Include="tools\wifis_available.py" />
     <Compile Include="tools\wifitest.py" />
