@@ -1,0 +1,5 @@
+
+{
+  "_target": "logging",
+  "data": {"HOSTAPD_UPDATE": {"status": "OK" }}
+}

@@ -1,0 +1,9 @@
+{
+  "_target": "logging",
+  "data": {
+    "WIFISTATUS": {
+      "OK": "This is a simulated result under windows.  On Linux, it really tests the wifi connection.",
+      "color": "66ff33"
+    }
+  }
+}

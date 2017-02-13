@@ -1,0 +1,13 @@
+
+{
+  "_target": "serialrw",
+  "data": {
+	  "FROMPORTAL": {
+		"AllClear": [
+		  "ff:ff:ff:ff:ff:ff"
+		]
+	  }
+	},
+  "other": "this cron file created by heartbeat.py"
+
+}

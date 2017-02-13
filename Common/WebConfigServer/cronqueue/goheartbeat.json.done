@@ -1,0 +1,12 @@
+
+{
+  "_target": "serialrw",
+  "data": {
+	  "FROMAWS": {
+		"HighAlert": [
+		  "ff:ff:ff:ff:ff:ff"
+		]
+	  }
+	},
+  "other": "this cron file created by heartbeat.py"
+}

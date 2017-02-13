@@ -1,0 +1,7 @@
+
+{
+  "_target": "logging",
+  "data": {
+    "WIFIAVAILABLE": ['PRETTYFLYFORAWIFI', 'EvacMate']
+  }
+}
