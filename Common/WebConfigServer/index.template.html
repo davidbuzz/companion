@@ -1,0 +1,488 @@
+﻿<html>
+<head>
+    <title>APSync Buzz Install Page</title>
+    <script src="static/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript">
+        var ws = null;
+        myVar = null;
+
+        // called every 1 sec to try reconnecting the WS when it's closed for some reason...
+        function reconnect() {
+            init();
+        }
+
+    function init() {
+
+        if ("WebSocket" in window) {
+            // determine it
+            defaultws = "wss://" + window.location.host + "/ws/";
+
+            // display it readonly
+            document.getElementById("ws").innerHTML = defaultws;
+           // connect it
+            ws = new WebSocket(defaultws);
+            ws.onopen = function() {
+                //console.log("Connection is opened");
+                document.getElementById("localws").style.backgroundColor = "#66ff33"; // "green"
+                document.getElementById("savesettings").style.color = "black";
+                
+                clearTimeout(myVar);
+            }
+            ws.onclose = function() {
+                console.log("Connection is closed");
+                //document.getElementById("statusdiv").style.backgroundColor = "#ff6666" // "red"
+                document.getElementById("localws").style.backgroundColor = "#ff6666"; // "red"
+                document.getElementById("remotews").style.backgroundColor = "#ff6666";
+                document.getElementById("isserial").style.backgroundColor = "#ff6666";
+                document.getElementById("savesettings").style.color = "grey";
+                init_wifi_colors();
+                myVar = window.setTimeout(reconnect, 1000);
+            }
+            ws.onmessage = function (msg) {
+                now = new Date().toLocaleString();
+                skip = false;  
+                json = JSON.parse(msg.data);
+                if (typeof (json.WIFISTATUS) !== 'undefined') { // this is both use for colouring, AND displated to the user below.
+                    //alert(msg.data);
+                    //alert(json.WIFISTATUS.stage);
+                    if (typeof (json.WIFISTATUS.stage) !== 'undefined') {
+                        //alert(typeof(json.WIFISTATUS.stage));
+                        stagenum = json.WIFISTATUS.stage;
+                        //alert(stagenum);
+                        newid = "wifi1-" + stagenum;
+                        //alert(newid + "  ->  " + json.WIFISTATUS.color);
+                        if (stagenum == "1") {
+                            init_wifi_colors();
+                            document.getElementById(newid).style.backgroundColor = json.WIFISTATUS.color;
+                            document.getElementById("wifiicons").style.display = 'none';
+                        }
+                        if (stagenum != "6") {
+                            document.getElementById(newid).style.backgroundColor = json.WIFISTATUS.color;
+                            document.getElementById("wifiicons").style.display = 'none';
+                        }
+                        // the 6th message is the same as a message without a number it's the overview color. 
+                        if (stagenum == "6") {
+                            document.getElementById("wifi1").style.backgroundColor = json.WIFISTATUS.color;
+                            document.getElementById("wifiicons").style.display = 'block';
+                        }
+                    } else {
+                        //alert(msg.data);
+                        init_wifi_colors();
+                        document.getElementById("wifi1").style.backgroundColor = json.WIFISTATUS.color;
+                        document.getElementById("wifiicons").style.display = 'block';
+                    }
+                }
+
+                if (typeof (json.WIFIAVAILABLE) !== 'undefined') { // this is both use for colouring, AND displated to the user below.
+                    //document.getElementById("wifi1").style.backgroundColor = json.WIFIAVAILABLE.color;
+                    availables( json.WIFIAVAILABLE);
+                }
+
+                if (typeof (json.DEVICELIST2) !== 'undefined') {   // this is ONLY used for display in this node, not below.
+                    //document.getElementById("nodes").innerHTML = JSON.stringify(json.DEVICELIST, null, '\t');
+                    s= JSON.stringify(json.DEVICELIST2);
+                    //alert(s);
+                    buildHtmlTable2(json.DEVICELIST2);
+                    skip = True;
+                }
+
+                if (skip==false) {  // present all other JSON info for logging to screen , etc.
+
+                    document.getElementById("display").innerHTML = now + "  " + msg.data + "\n" + document.getElementById("display").innerHTML;
+
+                    // also if we see and "FROMPORTAL" message, then we green-light the PORTAL connection
+                    if (typeof (json.FROMPORTAL) !== 'undefined') {
+                        document.getElementById("remotews").style.backgroundColor = "#66ff33" // "green"
+                    }
+
+                    // also if we see and "SERIAL" message, then we green-light the SERIAL connection
+                    if (typeof (json.SERIAL) !== 'undefined') {
+                        document.getElementById("isserial").style.backgroundColor = "#66ff33" // "green"
+
+                        if (typeof (json.SERIAL["SEND>>"])  !== 'undefined'){
+                            m = json.SERIAL["SEND>>"];
+                            if (m == "SetNetworkState-standby") {
+                                document.getElementById("statusdiv").style.backgroundColor = "#eeeeee";  //grey
+                            }
+
+                        }
+                        if (typeof (json.SERIAL["RECV<<"]) !== 'undefined') {
+                            document.getElementById("statusdiv").style.backgroundColor = "#0000ff";  //blue
+                            //alert('recv');
+                        }
+                    }
+
+
+                }
+                //alert(msg.data);
+            }
+        } else {
+            console.log('Your browser doesnt support WebSocket!')
+        }
+    }
+
+    function send() {
+
+        var obj = {
+            'ssid1': document.getElementById("ssid1").value,
+            'pwd1': document.getElementById("pwd1").value,
+            'ssid2': document.getElementById("ssid2").value,
+            'pwd2': document.getElementById("pwd2").value,
+            'portal1': document.getElementById("portal1").value,
+            'portal2': document.getElementById("portal2").value,
+            'failtime': document.getElementById("failtime").value,
+            'basicauth': document.getElementById("basicauth").value,
+            // 'data': document.getElementById("data").value,
+            'src': 'webpage',
+        };
+        j = JSON.stringify(obj);
+        //alert(j);
+        ws.send(j);
+
+    }
+    function toggle_visibility(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+
+    function sendtoPORTAL() {
+        try{
+            j = JSON.parse(document.getElementById("data1").value);
+            var obj = {
+                'data': JSON.parse(document.getElementById("data1").value),
+                'src': 'portalsimulclient',
+            };
+        } catch (e) {
+            var obj = {
+                'response': "Sorry, the JSON you typed in was invalid, please try again. The error was:"+e.message,
+                'src': 'portalsimulclient',
+            };
+        }
+        j = JSON.stringify(obj);
+        //alert(j);
+        ws.send(j);
+    }
+    function sendfromPORTAL() {
+        try{
+            j = JSON.parse(document.getElementById("data2").value);
+            var obj = {
+                'data': JSON.parse(document.getElementById("data2").value),
+                'src': 'portalsimulserver',
+            };
+        } catch (e) {
+            var obj = {
+                'response': "Sorry, the JSON you typed in was invalid, please try again. The error was:" + e.message,
+                'src': 'portalsimulserver',
+            };
+        }
+        j = JSON.stringify(obj);
+        //alert(j);
+        ws.send(j);
+    }
+    function swapwifi() {
+        init_wifi_colors();
+
+        s1 = document.getElementById("ssid1").value;
+        s2 = document.getElementById("ssid2").value;
+        p1 = document.getElementById("pwd1").value;
+        p2 = document.getElementById("pwd2").value;
+
+        document.getElementById("ssid1").value = s2;
+        document.getElementById("ssid2").value = s1;
+        document.getElementById("pwd1").value = p2;
+        document.getElementById("pwd2").value = p1;
+
+        return false;
+    }
+
+    function init_wifi_colors() {
+        document.getElementById("wifi1").style.backgroundColor = "#eeeeee"; // "grey means doing nothing
+        document.getElementById("wifi1-1").style.backgroundColor = "#ff6666"; // "red"
+        document.getElementById("wifi1-2").style.backgroundColor = "#ff6666"; // "red"
+        document.getElementById("wifi1-3").style.backgroundColor = "#ff6666"; // "red"
+        document.getElementById("wifi1-4").style.backgroundColor = "#ff6666"; // "red"
+        document.getElementById("wifi1-5").style.backgroundColor = "#ff6666"; // "red"
+        document.getElementById("wifiicons").style.display = 'block';
+        
+    }
+
+    // before committing to *safe* this stuff to a config file, test the wifi...
+    function testwifi() {
+
+        document.getElementById("wifiicons").style.display = 'none';
+
+        // it's never allowed to go over 60 seconds...
+        setTimeout(testwifiover, 60000);
+
+        init_wifi_colors();
+        var obj = {
+            'src': 'testwifi',
+            'ssid1': document.getElementById("ssid1").value,
+            'pwd1': document.getElementById("pwd1").value,
+        };
+        j = JSON.stringify(obj);
+        ws.send(j);
+
+        return false;
+    }
+    function testwifiover() {
+         
+        init_wifi_colors();
+        document.getElementById("wifiicons").style.display = 'block';
+        document.getElementById("wifi1").style.backgroundColor = "#eeeeee"; // "grey"
+        //alert("wifi test timed out, sorry, it does not seem to have worked this time.");
+    }
+    function from1() {
+        document.getElementById("data2").value = '{}';
+        return false;
+    }
+    function from2() {
+        document.getElementById("data2").value = '{ "AllClear": [  "aa:bb:cc:dd:ee:ff",   "aa:bb:cc:dd:ee:dd",   "eb:4f:80:b6:6a:e7",   "aa:bb:cc:dd:ee:aa"   ] }';
+        return false;
+    }
+    function from6() {
+        document.getElementById("data2").value = '{ "HighAlert": [  "ff:ff:ff:ff:ff:ff"  ] }';
+        return false;
+    }
+    function from3() {
+        document.getElementById("data2").value = '{ "ChangeStatus": {  "ff:ff:ff:ff:ff:ff": "2"  }   }';
+        return false;
+    }
+    function from4() {
+        document.getElementById("data2").value = '{ "ChangeStatus": {  "ff:ff:ff:ff:ff:ff": "4"  }   }';
+        return false;
+    }
+    function from5() {
+        document.getElementById("data2").value = ' { "NetworkReset": [  "ff:ff:ff:ff:ff:ff"  ]  }';
+        return false;
+    }
+
+   
+    function to1() {
+        document.getElementById("data1").value = '{ "ChangeStatus": {  "eb:4f:80:b6:6a:e7": "3"  },  "response": "QQQQQQTEST"  }';
+        return false;
+    }
+    function to2() {
+        document.getElementById("data1").value = '{ "DeviceChange": { "8f:a6:26": {  "BatteryLevel": "d7 0f", "FirmwareVersion": "0.9.9", "LastDeviceSeenDateTime": 1466389926, "LastRead": "00 00 00", "NodeID": "01", "NewDeviceStatus": 1, "RSSI": 1.0, "Temperature": "94 08" } } }';
+        return false;
+    }
+
+    function availables(options) {
+        var select = document.getElementById("available");
+
+        // clear old list:
+        var length = select.options.length;
+        for (i = 0; i < length; i++) {
+            select.options[i] = null;
+        }
+
+
+        // the default value:
+        var el = document.createElement("option");
+        el.textContent = "--select an option--";
+        el.value = el.textContent;
+        select.appendChild(el);
+
+        // the others...
+        for (var i = 0; i < options.length; i++) {
+            var opt = options[i];
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+    }
+
+    function toggle_pass() {
+        var pass = document.getElementById('showhide').innerHTML;
+        if (pass == "show") {
+            document.getElementById('basicauth').type = "text";
+            pass = "hide";
+        }
+        else {
+            document.getElementById('basicauth').type = "password";
+            pass = "show";
+        }
+        document.getElementById('showhide').innerHTML = pass;
+    }
+
+
+    function buildHtmlTable2(myList) {
+
+        tabBody = document.getElementById("tbody");
+
+        //clean out the content of the tbody by popumating its inards with an empty one
+        var new_tbody = document.createElement('tbody');
+
+        //tabBody.parentNode.replaceChild(new_tbody, tabBody);
+        headerdone = false;
+
+        // reload new one
+        //tabBody = document.getElementById("tbody");
+
+        var columnSet = [];
+        //for (var i = 0 ; i < myList.length ; i++) {
+            //alert("Hrow");
+            row = document.createElement("tr");
+            var rowHash = myList[0];
+            // table header
+            for (var key in rowHash) {
+                columnSet.push(key);
+                //alert("Hcol");
+                cell1 = document.createElement("td");
+                textnode1 = document.createTextNode(key);
+                cell1.appendChild(textnode1);
+                row.appendChild(cell1);
+            }
+            new_tbody.appendChild(row);
+        //}
+
+        // columnSet is the titles of the columns
+        for (var i = 0 ; i < myList.length ; i++) {
+            //alert("Drow");
+            row = document.createElement("tr");
+            // table data
+            for (var colIndex = 0 ; colIndex < columnSet.length ; colIndex++) {
+                var cellValue = myList[i][columnSet[colIndex]];
+                if (cellValue == null) { cellValue = ""; }
+                //alert("Dcol");
+                cell1 = document.createElement("td");
+                textnode1 = document.createTextNode(cellValue);
+                cell1.appendChild(textnode1);
+                row.appendChild(cell1);
+            }
+
+            new_tbody.appendChild(row);
+        }
+        // reassign 'tbody' ID to the new one before we switch it in...
+        tabBody.id = 'old_tbody';
+        new_tbody.id = "tbody";
+        // reload html with newly buiolt table 
+        tabBody.parentNode.replaceChild(new_tbody, tabBody);
+
+    }
+
+
+                    </script>
+</head>
+<body onload="init();">
+    <h3>APSync Buzz Web Configuration Page. </h3> <br />
+    Major:{{MAJORVERSION}} <br />Minor:{{MINORVERSION}}<br /><p>&nbsp;</p>
+    <table>
+        <tr>
+            <td>WIFI SSID1</td>
+            <td><input type="text" id="ssid1" value="{{SSID1}}">  &nbsp; <select id="available"  style="color:grey" onchange="document.getElementById('ssid1').value = document.getElementById('available').value;"><option>No WIFIs available yet, please wait.</option></select></td>
+        </tr>
+        <tr>
+            <td>WIFI PASSWORD1</td>
+            <td><input type="text" id="pwd1" value="{{PASSWORD1}}"></td>
+            <td>&nbsp;<span id="wifiicons"><a href="" onclick="testwifi(); return false;"><img src="/static/testtriangle.png" width="30px" height="30px" /><img src="/static/wifi.png" width="30px" height="30px" /></a></span></td>
+        </tr>
+        <tr><td>&nbsp;<a href="" onclick="swapwifi(); return false; "><img src="/static/swapper.png" width="30px" height="30px"/></a></td></tr>
+        <tr>
+            <td>WIFI SSID2</td>
+            <td><input type="text" id="ssid2" value="{{SSID2}}"></td>
+        </tr>
+        <tr>
+            <td>WIFI PASSWORD2</td>
+            <td><input type="text" id="pwd2" value="{{PASSWORD2}}"></td>
+        </tr>
+
+    </table>
+    <input type="button" onclick="send(); return false;" value="Save Settings" id="savesettings" style="color:grey"><br />
+    <input type="button" onclick="toggle_visibility('advanced'); return false;" value="Show/Hide Advanced Settings"><br />
+    <p>Active APSync Devices:<br />
+    <table border='1' id='mytable'>
+        <tbody id='tbody'>
+            <tr><td>-- no active devices yet --</td></tr>
+        </tbody>
+    </table>
+        
+    </p>
+<hr />
+<div id="advanced" style="display:none">
+    <table>
+        <h3 style="color:grey">Advanced Settings  </h3>
+
+        <div style="width:50px;height:50px;background-color:#eeeeee;position: fixed;top: 20px;right: 500px;" id="wifi1">Wifi1 Test</div>
+        <div style="width:10px;height:20px;background-color:#ff6666;position: fixed;top: 70px;right: 540px;" id="wifi1-1">1</div>
+        <div style="width:10px;height:20px;background-color:#ff6666;position: fixed;top: 70px;right: 530px;" id="wifi1-2">2</div>
+        <div style="width:10px;height:20px;background-color:#ff6666;position: fixed;top: 70px;right: 520px;" id="wifi1-3">3</div>
+        <div style="width:10px;height:20px;background-color:#ff6666;position: fixed;top: 70px;right: 510px;" id="wifi1-4">4</div>
+        <div style="width:10px;height:20px;background-color:#ff6666;position: fixed;top: 70px;right: 500px;" id="wifi1-5">5</div>
+
+        <div style="width:50px;height:50px;background-color:#ff6666;position: fixed;top: 20px;right: 350px;" id="localws">Local WS</div>
+        <div style="width:50px;height:50px;background-color:#ff6666;position: fixed;top: 20px;right: 200px;" id="isserial">Serial</div>
+        <div style="width:50px;height:50px;background-color:#ff6666;position: fixed;top: 20px;right: 50px;" id="remotews">Remote PORTAL</div>
+
+        <div style="width:50px;height:50px;background-color:#eeeeee;position: fixed;top: 90px;right: 50px;" id="statusdiv">Status Color</div>
+
+        <!-- <div style="width:50px;height:50px;background-color:red;position: fixed;top: 20px;right: 500px;" id="isgooglethere">Web Server</div>  -->
+  <!--        <tr style="color:grey">
+            <td>SERIAL NodeID</td>
+            <td><input type="text" id="txt5" value="05" style="color:grey">  (2 digit alphanumeric HEX)</td>
+       </tr>  -->
+     <tr>
+            <td>Primary PORTAL Server Name</td>
+            <td><input type="text" id="portal1" value="{{PORTAL1}}">eg: wss://www.someserver.com/ws </td>
+        </tr>
+        <tr>
+            <td>Secondary PORTAL Server Name</td>
+            <td><input type="text" id="portal2" value="{{PORTAL2}}">eg: wss://127.0.0.1:9999/ws </td>
+        </tr>
+        <tr>
+            <td>Fail-Over Time</td>
+            <td><input type="text" id="failtime" value="{{FAILOVERTIME}}"> - in seconds. </td>
+        </tr>
+        <tr>
+            <td>Password for PORTAL HTTP Basic Auth</td>
+            <td><input type="password" id="basicauth" value="{{BASICAUTH}}"> <span id="showhide" onclick="toggle_pass();  return false;">show</span></td>
+        </tr>        
+        
+          <tr style="color:grey">
+            <td>ws destination:</td>
+            <td><div id="ws" style="color:grey">eg: wss://127.0.0.1:8888/ws/</div></td> <!--<input type="button" onclick="init()" value="Send" style="color:grey"></td> -->
+
+        </tr>
+        <tr style="color:grey">
+            <td>currently preferred WIFI: ( at page reload )</td>
+            <td><div id="currentwifi" style="color:grey">{{CURRENTWIFI}}</div></td>
+        </tr>
+
+    </table>
+    </p>
+    <!-- <input type="button" onclick="send();  return false;" value="Send" style="color:grey"><br />  -->
+    <p>
+    <hr />
+        <h3 style="color:grey">PORTAL Debugger   </h3>
+        <div style="width: 500px;float: left;height: 80px;">
+            <textarea rows="4" id=data1 cols="50" style="color:grey">This is where you can paste JSON if you want.</textarea><br />
+            <input type="button" onclick="sendtoPORTAL(); return false;" value="Send to PORTAL" style="color:grey">
+            &nbsp;<span style="color:grey; font-size:small;">Examples:</span>&nbsp;<input type="button" onclick="to1()" value="." style="color:orange; width:10px;height:10px">
+            &nbsp;<input type="button" onclick="to2()" value="." style="color:orange; width:10px;height:10px"> <br />
+        </div>
+        <div style="width: 500px;float: left;height: 80px;">
+            <textarea rows="4" id=data2 cols="50" style="color:grey">This is where you can paste JSON if you want.</textarea><br />
+            <input type="button" onclick="sendfromPORTAL()" value="Simulate Send from PORTAL" style="color:grey"> 
+                    &nbsp;<span style="color:grey; font-size:small;">Examples:</span>
+                    &nbsp;<input type="button" onclick="from1()" value="." style="color:orange; width:10px;height:10px">
+                    &nbsp;<input type="button" onclick="from2()" value="." style="color:orange; width:10px;height:10px">
+                    &nbsp;<input type="button" onclick="from6()" value="." style="color:orange; width:10px;height:10px">
+                    &nbsp;<input type="button" onclick="from3()" value="." style="color:orange; width:10px;height:10px">
+                    &nbsp;<input type="button" onclick="from4()" value="." style="color:orange; width:10px;height:10px">
+                    &nbsp;<input type="button" onclick="from5()" value="." style="color:orange; width:10px;height:10px">
+            <br />
+        </div>
+        <div id="clear" style="clear: both;"></div>
+        <p>
+    <hr />
+    <h3>Response:</h3>
+    <pre id="display"></pre>
+    <hr />
+            </div>
+            </body>
+
+</html>

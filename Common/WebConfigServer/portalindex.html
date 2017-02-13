@@ -1,0 +1,102 @@
+﻿<html>
+<head>
+    <title>APSync Buzz PORTAL Simulation.</title>
+ <body>
+     APSync Buzz PORTAL Simulation.<br />
+
+     Please connect via a websocket to this URL, but with /ws/ on the end for the actual websocket location. <br />
+
+     Demo mode: {{DEMO}} &nbsp;&nbsp;
+
+     Standby mode: {{STBY}}&nbsp;&nbsp;
+
+     HighAlert mode: {{ALERT}}&nbsp;&nbsp;
+
+     NetworkReset mode: {{RESET}}&nbsp;&nbsp;
+
+     Green: {{GREEN}}&nbsp;&nbsp;
+     Red: {{RED}}&nbsp;&nbsp;
+
+
+     <p></p>
+     <br />
+
+     <button id="d_on" type="button">demo on</button>
+     <button id="d_off" type="button">demo off</button>
+     &nbsp; &nbsp;
+     <button id="s_on" type="button">Standby</button>
+     <button id="h_on" type="button">HighAlert</button>
+     &nbsp; &nbsp;
+     <button id="n_on" type="button">NetworkReset-in-30secs</button>
+     &nbsp;&nbsp;
+     <button id="btn_green" type="button">all green</button>
+     <button id="btn_red" type="button">all red</button>
+
+     <br />
+
+
+     <script src="/static/jquery-1.10.1.min.js"></script>
+     <script>
+         var e = "0"; // emerg
+         var h = "0"; // alert
+         var d = "0"; //demo
+         var s = "0"; //stby
+         var n = "0"; //reset
+
+         var g = "0"; // green
+         var r = "0";  //red
+
+         function send_it(url) {
+             $.ajax({
+                 type: 'GET',
+                 url: url,
+                 success: function (data) {
+                     //alert("success")
+                     window.location.reload()
+                 }
+             });
+
+         }
+
+         $("#d_on").click(function () {
+             d = "1"; h = "0"; s = "0"; n = "0"; e = "0"; g = "0"; r = "0";
+             send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+         });
+
+        $("#d_off").click(function () {
+            d = "0"; h = "0"; s = "0"; n = "0"; e = "0"; g = "0"; r = "0";
+            send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+        });
+
+        $("#e_on").click(function () {
+            d = "0"; h = "0"; s = "0"; n = "0"; e = "1"; g = "0"; r = "0";
+            send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+        });
+        $("#s_on").click(function () {
+            d = "0"; h = "0"; s = "1"; n = "0"; e = "0"; g = "0"; r = "0";
+            send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+        });
+        $("#h_on").click(function () {
+            d = "0"; h = "1"; s = "0"; n = "0"; e = "0"; g = "0"; r = "0";
+            send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+        });
+
+        $("#n_on").click(function () {
+            d = "0"; h = "0"; s = "0"; n = "1"; e = "0"; g = "0"; r = "0";
+            send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+        });
+
+        $("#btn_green").click(function () {
+            d = "0"; h = "0"; s = "0"; n = "0"; e = "0"; g = "1"; r = "0";
+            send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+        });
+        $("#btn_red").click(function () {
+            d = "0"; h = "0"; s = "0"; n = "0"; e = "0"; g = "0"; r = "1";
+            send_it("/feature/?demo=" + d +  "&highalert=" + h + "&standby=" + s + "&networkreset=" + n + "&green=" + g + "&red=" + r + "");
+        });
+
+     </script>
+
+
+            </body>
+</html>
