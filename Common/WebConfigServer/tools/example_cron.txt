@@ -1,0 +1,18 @@
+# this is saved to end of /etc/crontab
+
+# note that *everything* that runs ONCE on boot is started from on_reboot.sh except the heartbeat.py autowifiscript
+
+@reboot root /root/WebConfigServer/tools/on_reboot.sh & 2>&1 > /dev/null
+
+# every minute...
+
+* * * * * root /root/WebConfigServer/tools/wifi_scan.sh > /root/WebConfigServer/tools/wifi_scan.txt 2>&1 & 
+
+# EVERY 5 MINUTES... if our internet isn't working.... poke each of the possible WIFI interfacces, and test each till we get one that works....
+
+*/5 * * * * root cd /root/WebConfigServer ; /root/WebConfigServer/linuxenv/bin/python tools/wifitest.py ; echo "wifitest.py hourly cron complete" > /dev/consol
+
+# every whenever:
+
+@daily root cd /root/WebConfigServer/ ; /root/WebConfigServer/linuxenv/bin/python ./tools/heartbeat.py # autowifiscript
+

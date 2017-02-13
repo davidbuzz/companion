@@ -1,0 +1,7 @@
+[program:WebConfigServer]
+command=/root/WebConfigServer/runlinux.sh
+autorestart=true
+stdout_logfile=/var/log/WebConfigServer_main.log
+stdout_logfile_maxbytes=25MB
+stdout_logfile_backups=0
+redirect_stderr=True

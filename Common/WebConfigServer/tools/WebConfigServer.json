@@ -1,0 +1,11 @@
+{
+  "portal1": "wss://127.0.0.1:9999/ws/", 
+  "portal2": "wss://www.someremoteserver.com/ws/", 
+  "basicauth": "apsync:securepasswords", 
+  "failtime": "300", 
+  "pwd2": "wwxxyyzz", 
+  "pwd1": "aabbccdd", 
+  "src": "webpage", 
+  "ssid2": "myworkwifi", 
+  "ssid1": "yourhomewifi"
+}
