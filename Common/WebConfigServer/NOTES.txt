@@ -1,0 +1,52 @@
+Buzz's internal notes for his use, mostly.
+
+For precise syntax of JSON to be used, Please see the examples in the file json_samples.txt
+
+# all MAC addresses in all JSON should be presented in lowercase, not UPPERCASE.  ie aa:bb:cc:dd:ee:ff  NOT  AA:BB:CC:DD:EE:FF and NOT Aa:Bb:cC:dD:.. etc 
+
+#RPI notes for buzz:
+apt-get install supervisor
+http://supervisord.org/running.html
+
+cat  /etc/supervisor/conf.d/WebConfigServer.conf
+[program:WebConfigServer]
+command=/root/WebConfigServe/runlinux.sh
+autorestart=true
+stdout_logfile=/var/log/WebConfigServer_main.log
+stdout_logfile_maxbytes=50MB
+stdout_logfile_backups=1
+redirect_stderr=True
+
+
+apt-get remove hotplugd
+
+service supervisor restart
+update-rc.d supervisor enable 2
+
+for buzzs tiny WIFI dongle setup see: 
+https://www.maketecheasier.com/setup-wifi-on-raspberry-pi/
+
+# for TP-LINK dongle: 
+http://rfcdotme.blogspot.com.au/2012/10/installing-carl9170-firmware-on.html
+except firmware blob is now found here:
+http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git/tree/carl9170-1.fw
+and dhcp/hostapd/iptables/nat etc from here:
+http://elinux.org/RPI-Wireless-Hotspot
+# avahi / mdns from here: 
+http://www.howtogeek.com/167190/how-and-why-to-assign-the-.local-domain-to-your-raspberry-pi/
+#hostname change:
+http://www.howtogeek.com/167195/how-to-change-your-raspberry-pi-or-other-linux-devices-hostname/
+#serial console etc: 
+http://www.hobbytronics.co.uk/raspberry-pi-serial-port
+
+# notes on basic auth and websockets together:
+https://blog.heckel.xyz/2014/10/30/http-basic-auth-for-websocket-connections-with-undertow/
+
+# newer pip needed:
+ pip install --upgrade pip
+
+# GPIO module comes from here:
+pip install RPi.GPIO
+or from here: https://pypi.python.org/pypi/RPi.GPIO
+
+

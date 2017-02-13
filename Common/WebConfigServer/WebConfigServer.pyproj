@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{43b73eb0-8e2c-4149-b5e9-850c61f9eea6}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>main.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>{5655e754-05cf-4a70-9de1-91fb7276f4f7}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="portalindex.html" />
+    <Content Include="certs\certificate.pem" />
+    <Content Include="certs\certrequest.csr" />
+    <Content Include="certs\makeme.sh" />
+    <Content Include="certs\privatekey.pem" />
+    <Content Include="cronqueue\aaaa.json.done" />
+    <Content Include="cronqueue\allclear.json.done" />
+    <Content Include="cronqueue\cron_aaaa.bat" />
+    <Content Include="cronqueue\cron_allclear.bat" />
+    <Content Include="cronqueue\cron_DeviceUpdateRequest.bat" />
+    <Content Include="cronqueue\cron_highalert.bat" />
+    <Content Include="cronqueue\DailyDeviceUpdateRequest.json.done" />
+    <Content Include="cronqueue\highalert.json.done" />
+    <Content Include="cronqueue\hostapd.json.done" />
+    <Content Include="cronqueue\stopheartbeat.json.done" />
+    <Content Include="cronqueue\wifilist.json.done" />
+    <Content Include="cronqueue\wifilistresult.json.done" />
+    <Content Include="cronqueue\wifitestresult.json.done" />
+    <Content Include="index.template.html" />
+    <Content Include="json_samples.txt" />
+    <Content Include="NOTES.txt" />
+    <Content Include="requirements.txt" />
+    <Content Include="restart_linux.sh" />
+    <Content Include="runlinux.sh" />
+    <Content Include="run_in_debug_mode.sh" />
+    <Content Include="static\jquery-1.10.1.min.js" />
+    <Content Include="static\jquery-3.0.0.min.js" />
+    <Content Include="static\swapper.png" />
+    <Content Include="static\testtriangle.png" />
+    <Content Include="static\wifi.png" />
+    <Content Include="timestamp.sh" />
+    <Content Include="tools\deploy10.bat" />
+    <Content Include="tools\etc-supervisor-conf.d-WebConfigServer.conf" />
+    <Content Include="tools\WebConfigServer.json" />
+    <Content Include="tools\WebConfigServer.windows.json" />
+    <Content Include="tools\WebConfigServer_notifier.txt" />
+    <Content Include="tools\WebConfigServer_supervisor.txt" />
+    <Content Include="tools\example_cron.txt" />
+    <Content Include="tools\example_fstab.txt" />
+    <Content Include="tools\hostapd.conf" />
+    <Content Include="tools\leds.windows.json" />
+    <Content Include="tools\masterwifi.json" />
+    <Content Include="tools\masterwifi.windows.json" />
+    <Content Include="tools\my_mac_serial.json" />
+    <Content Include="tools\my_mac_serial.windows.json" />
+    <Content Include="tools\network-pre.conf" />
+    <Content Include="tools\on_reboot.sh" />
+    <Content Include="tools\plink.exe" />
+    <Content Include="tools\post-up-wlan1.sh" />
+    <Content Include="tools\pscp.exe" />
+    <Content Include="tools\putty.exe" />
+    <Content Include="tools\start_wifi_drivers.sh" />
+    <Content Include="tools\testwifi.env" />
+    <Content Include="tools\testwifi.json" />
+    <Content Include="tools\undeploy.bat" />
+    <Content Include="tools\wifi-blacklist.conf" />
+    <Content Include="tools\wifi_scan.sh" />
+    <Content Include="tools\wifi_scan.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="portal_tornado_ws_server_simulator.py" />
+    <Compile Include="cron_reader_thread.py" />
+    <Compile Include="file_utils.py" />
+    <Compile Include="json_utils.py" />
+    <Compile Include="main.py" />
+    <Compile Include="SerialPacketHandler.py" />
+    <Compile Include="SerialReaderWriter.py" />
+    <Compile Include="serial_utils.py" />
+    <Compile Include="SimplePriorityQueue.py" />
+    <Compile Include="stdoutcontext.py" />
+    <Compile Include="test.py" />
+    <Compile Include="tools\heartbeat.py" />
+    <Compile Include="tools\wifis_available.py" />
+    <Compile Include="tools\wifitest.py" />
+    <Compile Include="tools\write_hostapd_conf.py" />
+    <Compile Include="tornado_ws_server.py" />
+    <Compile Include="ws4py_ws_client.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="certs" />
+    <Folder Include="cronqueue" />
+    <Folder Include="static" />
+    <Folder Include="tools" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="win-env\">
+      <Id>{5655e754-05cf-4a70-9de1-91fb7276f4f7}</Id>
+      <BaseInterpreter>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</BaseInterpreter>
+      <Version>2.7</Version>
+      <Description>win-env (Python 2.7)</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <LibraryPath>Lib\</LibraryPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X86</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
