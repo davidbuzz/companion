@@ -1,0 +1,8 @@
+os
+cffi_modules
+_add_py_module
+error
+_add_c_module
+execfile
+basestring
+add_cffi_module

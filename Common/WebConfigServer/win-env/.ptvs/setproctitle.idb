@@ -1,0 +1,8 @@
+€}q(UdocqU)Allow customization of the process title.qUmembersq}q(Ugetproctitleq}q(UkindqUfunctionq	Uvalueq
+}q(U	overloadsq]q}q(hUGet the current process title.Uargsq)uahU0getproctitle() -- Get the current process title.uuUsetproctitleq}q(hh	h
+}q(h]q}q(hUChange the process title.h}qUnameqUtitles…uahU0setproctitle(title) -- Change the process title.uuU__file__q}q(hUdataqh
+}qUtypeq]qU__builtin__qUstr†qasuU__package__q}q (hhh
+}q!h]q"hUNoneType†q#asuU__name__q$}q%(hhh
+}q&h]q'hasuU__version__q(}q)(hhh
+}q*h]q+hasuU__doc__q,}q-(hhh
+}q.h]q/hasuuu.

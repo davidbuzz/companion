@@ -1,0 +1,13 @@
+UNITTEST_CASE
+six
+_check_mode_str
+OPEN_FILES
+IAstroidChecker
+BaseChecker
+astroid
+StdlibChecker
+register
+OPEN_MODULE
+Instance
+sys
+utils

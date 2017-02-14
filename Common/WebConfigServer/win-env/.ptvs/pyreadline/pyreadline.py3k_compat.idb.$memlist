@@ -1,0 +1,11 @@
+StringIO
+bytes
+execfile
+absolute_import
+unicode_literals
+collections
+print_function
+callable
+PY3
+sys
+unicode

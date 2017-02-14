@@ -1,0 +1,14 @@
+InconsistentMroError
+__doctype__
+MroError
+NotFoundError
+SuperArgumentTypeError
+DuplicateBasesError
+NoDefault
+InferenceError
+ResolveError
+AstroidBuildingException
+SuperError
+AstroidError
+UseInferenceDefault
+UnresolvableName

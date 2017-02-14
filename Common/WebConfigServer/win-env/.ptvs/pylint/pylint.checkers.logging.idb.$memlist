@@ -1,0 +1,12 @@
+six
+register
+CHECKED_CONVENIENCE_FUNCTIONS
+interfaces
+MSGS
+astroid
+LoggingChecker
+checkers
+_count_supplied_tokens
+is_method_call
+check_messages
+utils

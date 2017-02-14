@@ -1,0 +1,12 @@
+MisdesignChecker
+IGNORED_ARGUMENT_NAMES
+If
+check_messages
+MSGS
+IAstroidChecker
+register
+_count_boolean_expressions
+BoolOp
+re
+defaultdict
+BaseChecker

@@ -1,0 +1,13 @@
+NewStyleConflictChecker
+INFERENCE
+node_frame_class
+MSGS
+check_messages
+BaseChecker
+HIGH
+astroid
+register
+has_known_bases
+INFERENCE_FAILURE
+sys
+IAstroidChecker

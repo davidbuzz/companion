@@ -1,0 +1,10 @@
+serial
+os
+glob
+plat
+list_ports_common
+hwid
+desc
+comports
+port
+sys

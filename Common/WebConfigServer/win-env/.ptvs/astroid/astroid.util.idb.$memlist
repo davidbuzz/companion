@@ -1,0 +1,10 @@
+exceptions
+rename_warning
+method_to_function_warning
+safe_infer
+_Yes
+warnings
+attribute_to_function_warning
+generate_warning
+attribute_to_method_warning
+YES

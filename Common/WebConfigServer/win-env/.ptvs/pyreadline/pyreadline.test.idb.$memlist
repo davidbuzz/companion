@@ -1,0 +1,8 @@
+test_lineeditor
+absolute_import
+unicode_literals
+test_vi
+common
+print_function
+test_history
+test_emacs

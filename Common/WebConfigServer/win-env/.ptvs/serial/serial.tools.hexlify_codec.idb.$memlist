@@ -1,0 +1,11 @@
+getregentry
+serial
+IncrementalEncoder
+hex_decode
+codecs
+StreamWriter
+IncrementalDecoder
+hex_encode
+StreamReader
+Codec
+HEXDIGITS

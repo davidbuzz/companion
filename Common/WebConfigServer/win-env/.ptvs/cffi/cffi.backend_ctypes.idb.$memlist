@@ -1,0 +1,16 @@
+sys
+xrange
+unicode
+ctypes
+CTypesBackend
+CTypesType
+CTypesBaseStructOrUnion
+model
+CTypesGenericPrimitive
+CTypesGenericArray
+operator
+CTypesData
+CTypesGenericPtr
+long
+CTypesLibrary
+bytechr

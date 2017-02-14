@@ -1,0 +1,10 @@
+ParamDocChecker
+node_frame_class
+absolute_import
+register
+BaseChecker
+division
+print_function
+space_indentation
+re
+IAstroidChecker

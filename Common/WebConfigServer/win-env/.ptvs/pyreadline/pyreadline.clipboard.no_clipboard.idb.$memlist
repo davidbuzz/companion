@@ -1,0 +1,6 @@
+absolute_import
+print_function
+GetClipboardText
+unicode_literals
+SetClipboardText
+mybuffer

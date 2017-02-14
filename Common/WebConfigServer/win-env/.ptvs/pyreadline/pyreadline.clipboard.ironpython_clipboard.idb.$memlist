@@ -1,0 +1,8 @@
+clr
+cb
+txt
+absolute_import
+unicode_literals
+GetClipboardText
+SetClipboardText
+print_function

@@ -1,0 +1,3 @@
+getargspec
+getcallargs
+ismethod

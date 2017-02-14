@@ -1,0 +1,15 @@
+implements
+INFERENCE
+UNDEFINED
+__all__
+IChecker
+IAstroidChecker
+HIGH
+IRawChecker
+namedtuple
+Confidence
+Interface
+IReporter
+INFERENCE_FAILURE
+ITokenChecker
+CONFIDENCE_LEVELS
