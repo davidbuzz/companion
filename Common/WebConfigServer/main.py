@@ -5,14 +5,14 @@ import time
 import setproctitle
 from json_utils import json_wrap_with_target,json_unwrap_with_target,queue_ping
 from file_utils import read_passwd_file, file_get_contents, file_put_contents,read_config,check_crontab_queue 
-#make_server_manager,make_client_manager
 
-from SerialReaderWriter import SerialReaderWriter
-from SerialPacketHandler import SerialPacketHandler
+# uncomment more of these to enable some optional features - will need help to make them work 
+#from SerialReaderWriter import SerialReaderWriter
+#from SerialPacketHandler import SerialPacketHandler
 from tornado_ws_server import WebAndSocketServer
-from portal_tornado_ws_server_simulator import PORTALWebAndSocketServer
-from ws4py_ws_client import WebAndSocketClient   
-from cron_reader_thread import SlowActionsThread 
+#from portal_tornado_ws_server_simulator import PORTALWebAndSocketServer
+#from ws4py_ws_client import WebAndSocketClient   
+#from cron_reader_thread import SlowActionsThread 
 from SimplePriorityQueue import SimplePriorityQueue
 
 import binascii
@@ -108,11 +108,16 @@ if __name__ == '__main__':
 
         
         if processes['webclient'] == None:
-            # lets try to start the websocket CLIENT  ...
-            processes['webclient'] = WebAndSocketClient(portalclient_input_queue, portalclient_output_queue,gDEVICES,portalurl1)
-            processes['webclient'].daemon = True
-            processes['webclient'].start()
-            #time.sleep(delay); # just cause.  
+            try: 
+                # lets try to start the websocket CLIENT  ...
+                processes['webclient'] = WebAndSocketClient(portalclient_input_queue, portalclient_output_queue,gDEVICES,portalurl1)
+                processes['webclient'].daemon = True
+                processes['webclient'].start()
+                #time.sleep(delay); # just cause.  
+            except NameError:
+                print "WebAndSocketClient feature currently disabled, sorry.";
+                processes['webclient'] = -1;
+
 
         if processes['webserver'] == None:
             # lets try to start the local tornado webserver ... on port 8888
@@ -122,10 +127,15 @@ if __name__ == '__main__':
             #time.sleep(delay); # just cause.  
 
         if processes['slowserver'] == None:
-            # lets try to start the background / slow actions / cron thread
-            processes['slowserver'] = SlowActionsThread(slow_input_queue,slow_output_queue)
-            processes['slowserver'].daemon = True
-            processes['slowserver'].start()
+            try: 
+                # lets try to start the background / slow actions / cron thread
+                processes['slowserver'] = SlowActionsThread(slow_input_queue,slow_output_queue)
+                processes['slowserver'].daemon = True
+                processes['slowserver'].start()
+            except NameError:
+                print "SlowActionsThread feature currently disabled, sorry.";
+                processes['slowserver'] = -1;
+
 
         if sys.platform == 'win32':
             serialdevice = 'com33'
@@ -136,37 +146,52 @@ if __name__ == '__main__':
 
         #  Low level serial port handler only. 
         if processes['lowgw'] == None:
-            # now we try to attach to the serial device, if we can. 
-            processes['lowgw'] = SerialReaderWriter( lowserial_input_queue, lowserial_output_queue, gDEVICES , serialdevice )   # the comport is selected in __init__ in the SerialReaderWriter.py file. 
-            processes['lowgw'].daemon = True
-            processes['lowgw'].start()
-            processes['lowgw'].expecting_ack = False
-            time.sleep(1); # seems to need at least a second here. - windowsism? 
-            #print("expecting ack = False")
+            try: 
+                # now we try to attach to the serial device, if we can. 
+                processes['lowgw'] = SerialReaderWriter( lowserial_input_queue, lowserial_output_queue, gDEVICES , serialdevice )   # the comport is selected in __init__ in the SerialReaderWriter.py file. 
+                processes['lowgw'].daemon = True
+                processes['lowgw'].start()
+                processes['lowgw'].expecting_ack = False
+                time.sleep(1); # seems to need at least a second here. - windowsism? 
+                #print("expecting ack = False")
+            except NameError:
+                print "SerialReaderWriter ( low level serial) feature currently disabled, sorry.";
+                processes['lowgw'] = -1;
 
         # high level serial packet handler
         if processes['packetgw'] == None:
-            # now we try to attach to the serial device, if we can. 
-            processes['packetgw'] = SerialPacketHandler( serialpacket_input_queue, serialpacket_output_queue, gDEVICES  )  
-            processes['packetgw'].daemon = True
-            processes['packetgw'].start()
-            processes['packetgw'].expecting_ack = False
-            time.sleep(1); # seems to need at least a second here. - windowsism? 
-            #print("expecting ack = False")
+            try: 
+                # now we try to attach to the serial device, if we can. 
+                processes['packetgw'] = SerialPacketHandler( serialpacket_input_queue, serialpacket_output_queue, gDEVICES  )  
+                processes['packetgw'].daemon = True
+                processes['packetgw'].start()
+                processes['packetgw'].expecting_ack = False
+                time.sleep(1); # seems to need at least a second here. - windowsism? 
+                #print("expecting ack = False")
+            except NameError:
+                print "SerialPacketHandler( high level serial) feature currently disabled, sorry.";
+                processes['packetgw'] = -1;
 
 
-        if ( True ):   # are we running with a simulated PORTAL server, or an an actual one? 
-            if processes['portalwebserver'] == None:
+        # are we running with a simulated PORTAL server, or an an actual one? 
+        if processes['portalwebserver'] == None:
+            try: 
                 # try to start the PORTAL simulation server - it's also tornado as that's convenient. it's on port 9999
                 processes['portalwebserver'] = PORTALWebAndSocketServer(sim_input_queue,sim_output_queue)
                 processes['portalwebserver'].daemon = True
                 processes['portalwebserver'].start()
                 #time.sleep(delay); # just cause.  
-   
+            except NameError:
+                print "PORTALWebAndSocketServer feature currently disabled, sorry.";
+                processes['portalwebserver'] = -1;
+
         #print "sleeping 10 for threads debug"
         #time.sleep(10)
 
-        queue_check_list = [lowserial_output_queue,serialpacket_output_queue,portalclient_output_queue,web_output_queue,slow_output_queue,sim_output_queue]
+        # check all the lists if all features are disabled...? 
+        #queue_check_list = [lowserial_output_queue,serialpacket_output_queue,portalclient_output_queue,web_output_queue,slow_output_queue,sim_output_queue]
+        # absolute minimal list of queues to check: 
+        queue_check_list = [ web_output_queue ]
 
 
 
@@ -175,58 +200,58 @@ if __name__ == '__main__':
 
         # TODO busy/quiet check ( eg if we haven't seen anything in a queue for a second, it's "not busy", so we could check it a bit slower ). 
 
-        now = int(time.time())  # time in exact seconds
-        if now > last_check_time+10: # we post idle message at least every 10 secs
-            last_check_time = now
-            print "main loop is idling"
-            # review the pids every 10 secs and see if they called home properly
-            for pid in tasklist.keys():   # the .keys() avoids RuntimeError
-                if tasklist[pid] != None:
-                    recency = (tasklist[pid]['time']+55)  # 10 second check period, plus some extra seconds 'grace'
+    #    # this IF block works on the idea that every subprocess we spinup constantly sends us at the very least a "heartbeat" type packet every 10 seconds or so
+    #    # and this loop's job is to kill-off processes that haven't sent a heartbeat recently. ( and they'll be respawned ) 
+    #    now = int(time.time())  # time in exact seconds
+    #    if now > last_check_time+10: # we post idle message at least every 10 secs
+    #        last_check_time = now
+    #        print "main loop is idling"
 
-    #processes = {'webclient':None,'webserver':None,'slowserver':None,'lowgw':None,'packetgw':None,'portalwebserver':None}
+    #        # review the pids every 10 secs and see if they called home properly
+    #        for pid in tasklist.keys():   # the .keys() avoids RuntimeError
+    #            if tasklist[pid] != None:
+    #                recency = (tasklist[pid]['time']+55)  # 10 second check period, plus some extra seconds 'grace'
 
-                    proc = tasklist[pid]['name']  # the name passed into queue_ping() calls must match the process names used here
-                    if now>recency:
-                        print "###BAM! STRAIGHT IN THE KISSER! :"+str(pid)
-                        print "###BAM! STRAIGHT IN THE KISSER! :"+str(pid)
-                        print "###we havent heard from "+proc+" for seconds:"+str(now-recency)
-                        print "###BAM! STRAIGHT IN THE KISSER! :"+str(pid)
-                        print "###BAM! STRAIGHT IN THE KISSER! :"+str(pid)
-                        # first we'll try to terminate it as a valid multiprocess activity...
-                        # then....
+    ##processes = {'webclient':None,'webserver':None,'slowserver':None,'lowgw':None,'packetgw':None,'portalwebserver':None}
 
-                        kill_nonresponsive_processes = True  # change this as required. 
+    #                proc = tasklist[pid]['name']  # the name passed into queue_ping() calls must match the process names used here
+    #                if now>recency:
+    #                    print "###we havent heard from "+proc+" for seconds:"+str(now-recency)
+    #                    print "###BAM! STRAIGHT IN THE KISSER! :"+str(pid)
+    #                    # first we'll try to terminate it as a valid multiprocess activity...
+    #                    # then....
 
-                        if kill_nonresponsive_processes:
-                            #try:
-                            processes[proc].terminate() #AttributeError: 'NoneType' object has no attribute 'terminate'
-                            #except:
-                            #    pass
-                            time.sleep(0.1)
-                            #try:
-                            os.kill(pid,signal.SIGTERM)  # nice
-                            #except:
-                            #    pass
-                            time.sleep(0.1)
-                            #try:
-                            os.kill(pid,signal.SIGKILL)  # forceful
-                            #except:
-                            #    pass
-                            #time.sleep(0.1)
+    #                    kill_nonresponsive_processes = True  # change this as required. 
 
-                            processes[proc] = None    # clear the variable so we can restart it next loop! 
-                            #tasklist[pid] = None   # forget the old pid, so we don't keep trying to kill it
-                            tasklist.pop(pid,None)
+    #                    if kill_nonresponsive_processes:
+    #                        #try:
+    #                        processes[proc].terminate() #AttributeError: 'NoneType' object has no attribute 'terminate'
+    #                        #except:
+    #                        #    pass
+    #                        time.sleep(0.1)
+    #                        #try:
+    #                        os.kill(pid,signal.SIGTERM)  # nice
+    #                        #except:
+    #                        #    pass
+    #                        time.sleep(0.1)
+    #                        #try:
+    #                        os.kill(pid,signal.SIGKILL)  # forceful
+    #                        #except:
+    #                        #    pass
+    #                        #time.sleep(0.1)
 
-                        # tell the user / logging subsystem...
-                        j = {}
-                        j['pid'] = pid
-                        j['recency'] = str(now-recency)
-                        j['proc'] = proc
-                        l = {}
-                        l['PROCESS_KILLED'] =  j
-                        web_input_queue.put(1,l)
+    #                        processes[proc] = None    # clear the variable so we can restart it next loop! 
+    #                        #tasklist[pid] = None   # forget the old pid, so we don't keep trying to kill it
+    #                        tasklist.pop(pid,None)
+
+    #                    # tell the user / logging subsystem...
+    #                    j = {}
+    #                    j['pid'] = pid
+    #                    j['recency'] = str(now-recency)
+    #                    j['proc'] = proc
+    #                    l = {}
+    #                    l['PROCESS_KILLED'] =  j
+    #                    web_input_queue.put(1,l)
 
 
         time.sleep(0.1)        
@@ -253,6 +278,8 @@ if __name__ == '__main__':
             print "--------------------------------------------------------"
         # end of the debug / print code. 
 
+
+        # check all queues for outgoing packets, peek inside them to see where they are going ( "target" ), then sent them to the target.
         for _thisqueue in queue_check_list:
             while not _thisqueue.empty():   # while or if? # first method is 'if'. 
                 s = _thisqueue.get_nowait()
@@ -274,7 +301,7 @@ if __name__ == '__main__':
                         serialpacket_input_queue.put(priority,data)
                     if ( target == 'slowserver'):
                         slow_input_queue.put(priority,data)
-                    if ( target == 'watchtasks'):
+                    if ( target == 'watchtasks'): # all tasks that might crash send us these in a consistent format, so we just action them here: 
                         t = json.loads(data)
                         tasklist[t['pid']] = t # remember the process id and the time etc
                         #print repr(data)

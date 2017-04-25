@@ -1,5 +1,6 @@
 import serial
 import binascii
+# use like this:
 #from serial_utils import  make_bytes_readable_hex,serial_send,serial_receive, un_pretty
 
 # the opposite of make_bytes_readable_hex is:

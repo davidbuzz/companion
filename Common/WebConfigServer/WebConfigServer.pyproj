@@ -21,33 +21,18 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="portalindex.html" />
     <Content Include="certs\certificate.pem" />
     <Content Include="certs\certrequest.csr" />
     <Content Include="certs\makeme.sh" />
     <Content Include="certs\privatekey.pem" />
-    <Content Include="cronqueue\aaaa.json.done" />
-    <Content Include="cronqueue\allclear.json.done" />
-    <Content Include="cronqueue\cron_aaaa.bat" />
-    <Content Include="cronqueue\cron_allclear.bat" />
-    <Content Include="cronqueue\cron_DeviceUpdateRequest.bat" />
-    <Content Include="cronqueue\cron_highalert.bat" />
-    <Content Include="cronqueue\DailyDeviceUpdateRequest.json.done" />
-    <Content Include="cronqueue\highalert.json.done" />
-    <Content Include="cronqueue\hostapd.json.done" />
-    <Content Include="cronqueue\stopheartbeat.json.done" />
-    <Content Include="cronqueue\wifilist.json.done" />
-    <Content Include="cronqueue\wifilistresult.json.done" />
-    <Content Include="cronqueue\wifitestresult.json.done" />
     <Content Include="index.template.html" />
-    <Content Include="json_samples.txt" />
     <Content Include="NOTES.txt" />
     <Content Include="requirements.txt" />
-    <Content Include="restart_linux.sh" />
     <Content Include="runlinux.sh" />
     <Content Include="run_in_debug_mode.sh" />
     <Content Include="static\jquery-1.10.1.min.js" />
     <Content Include="static\jquery-3.0.0.min.js" />
+    <Content Include="static\LoadingImg.gif" />
     <Content Include="static\swapper.png" />
     <Content Include="static\testtriangle.png" />
     <Content Include="static\wifi.png" />
@@ -80,13 +65,9 @@
     <Content Include="tools\wifi_scan.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="portal_tornado_ws_server_simulator.py" />
-    <Compile Include="cron_reader_thread.py" />
     <Compile Include="file_utils.py" />
     <Compile Include="json_utils.py" />
     <Compile Include="main.py" />
-    <Compile Include="SerialPacketHandler.py" />
-    <Compile Include="SerialReaderWriter.py" />
     <Compile Include="serial_utils.py" />
     <Compile Include="SimplePriorityQueue.py" />
     <Compile Include="stdoutcontext.py" />
@@ -95,11 +76,9 @@
     <Compile Include="tools\wifitest.py" />
     <Compile Include="tools\write_hostapd_conf.py" />
     <Compile Include="tornado_ws_server.py" />
-    <Compile Include="ws4py_ws_client.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="certs" />
-    <Folder Include="cronqueue" />
     <Folder Include="static" />
     <Folder Include="tools" />
   </ItemGroup>
