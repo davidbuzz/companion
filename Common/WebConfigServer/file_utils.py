@@ -8,9 +8,9 @@ import time
 
 def read_config():
         if sys.platform == 'win32':
-            filename = 'X:\\WebConfigServer\\tools\\WebConfigServer.windows.json'
+            filename = 'X:\\WebConfigServer\\conf\\WebConfigServer.windows.json'
         else:
-            filename = '/root/WebConfigServer/tools/WebConfigServer.json'
+            filename = '/root/WebConfigServer/conf/WebConfigServer.json'
 
         #return json.loads(file_get_contents(filename))
 
@@ -37,18 +37,18 @@ def read_config():
 
 def read_master_wifi():
         if sys.platform == 'win32':
-            filename = 'X:\\WebConfigServer\\tools\\masterwifi.windows.json'
+            filename = 'X:\\WebConfigServer\\conf\\masterwifi.windows.json'
         else:
-            filename = '/root/WebConfigServer/tools/masterwifi.json'
+            filename = '/root/WebConfigServer/conf/masterwifi.json'
 
         return json.loads(file_get_contents(filename))
 
 def write_master_wifi(json_data):
         if sys.platform == 'win32':
-            dirname = 'X:\\WebConfigServer\\tools\\'
+            dirname = 'X:\\WebConfigServer\\conf\\'
             filename = dirname+'masterwifi.windows.json'
         else:
-            dirname = '/root/WebConfigServer/tools/'
+            dirname = '/root/WebConfigServer/conf/'
             filename = dirname+'masterwifi.json'
 
         cleaned = json.dumps(json_data,indent=2,sort_keys=True)       # json->string
@@ -60,10 +60,10 @@ def write_master_wifi(json_data):
 
 def write_config(json_data):
         if sys.platform == 'win32':
-            dirname = 'X:\\WebConfigServer\\tools\\'
+            dirname = 'X:\\WebConfigServer\\conf\\'
             filename = dirname+'WebConfigServer.windows.json'
         else:
-            dirname = '/root/WebConfigServer/tools/'
+            dirname = '/root/WebConfigServer/conf/'
             filename = dirname+'WebConfigServer.json'
 
         old = read_config() # for something to compage against before we change it.
@@ -196,8 +196,8 @@ def do_interfaces_file():
     up iptables-restore < /etc/iptables.ipv4.nat
     '''
 
-    # create new:
-    file_put_contents(interfacesfile,interfacescontent)
+    # create new - uncomment this to actually change the file programatically.
+    # file_put_contents(interfacesfile,interfacescontent)
 
 # internal utility 
 def _getMacAddress(): 
@@ -216,10 +216,10 @@ def _getMacAddress():
 def read_my_mac_address():
 
     if sys.platform == 'win32':
-        dirname = 'X:\\WebConfigServer\\tools\\'
+        dirname = 'X:\\WebConfigServer\\conf\\'
         filename = dirname+'my_mac_serial.windows.json'
     else:
-        dirname = '/root/WebConfigServer/tools/'
+        dirname = '/root/WebConfigServer/conf/'
         filename = dirname+'my_mac_serial.json'
 
     mymac = file_get_contents(filename)
@@ -229,11 +229,11 @@ def write_my_mac_address(mac=None):
 
     if sys.platform == 'win32':
         rootfolder = 'X:\\WebConfigServer\\'
-        toolsfolder = rootfolder+'tools\\'
+        conffolder = rootfolder+'conf\\'
         thefile = 'my_mac_serial.windows.json'
     else:
         rootfolder = '/root/WebConfigServer/'
-        toolsfolder = rootfolder+'tools/'
+        conffolder = rootfolder+'conf/'
         thefile = 'my_mac_serial.json'
 
 
@@ -242,7 +242,7 @@ def write_my_mac_address(mac=None):
         mac = _getMacAddress()
 
     # save the current MAC here: for other uses: 
-    file_put_contents(toolsfolder+thefile,mac) 
+    file_put_contents(conffolder+thefile,mac) 
     return mac
 
 

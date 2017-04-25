@@ -36,13 +36,12 @@
     <Content Include="static\swapper.png" />
     <Content Include="static\testtriangle.png" />
     <Content Include="static\wifi.png" />
-    <Content Include="tools\etc-supervisor-conf.d-WebConfigServer.conf" />
-    <Content Include="tools\WebConfigServer.json" />
-    <Content Include="tools\WebConfigServer.windows.json" />
-    <Content Include="tools\masterwifi.json" />
-    <Content Include="tools\masterwifi.windows.json" />
-    <Content Include="tools\my_mac_serial.json" />
-    <Content Include="tools\my_mac_serial.windows.json" />
+    <Content Include="conf\WebConfigServer.json" />
+    <Content Include="conf\WebConfigServer.windows.json" />
+    <Content Include="conf\masterwifi.json" />
+    <Content Include="conf\masterwifi.windows.json" />
+    <Content Include="conf\my_mac_serial.json" />
+    <Content Include="conf\my_mac_serial.windows.json" />
     <Content Include="tools\plink.exe" />
     <Content Include="tools\pscp.exe" />
     <Content Include="tools\putty.exe" />
@@ -51,13 +50,13 @@
     <Compile Include="file_utils.py" />
     <Compile Include="json_utils.py" />
     <Compile Include="main.py" />
-    <Compile Include="serial_utils.py" />
     <Compile Include="SimplePriorityQueue.py" />
     <Compile Include="stdoutcontext.py" />
     <Compile Include="tornado_ws_server.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="certs" />
+    <Folder Include="conf\" />
     <Folder Include="static" />
     <Folder Include="tools" />
   </ItemGroup>
