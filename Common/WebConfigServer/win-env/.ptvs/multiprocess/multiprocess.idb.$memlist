@@ -1,5 +1,5 @@
 Queue
-sharedctypes
+dummy
 TimeoutError
 heap
 RawValue
@@ -22,7 +22,7 @@ RLock
 queues
 Manager
 current_process
-dummy
+sharedctypes
 set_executable
 Lock
 JoinableQueue

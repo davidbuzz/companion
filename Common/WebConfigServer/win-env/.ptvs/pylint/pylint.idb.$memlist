@@ -1,7 +1,7 @@
 sys
-lint
-epylint
+graph
 run_pyreverse
+utils
 __version__
 __pkginfo__
 interfaces
@@ -10,8 +10,8 @@ run_symilar
 testutils
 config
 run_pylint
-graph
-utils
+lint
+epylint
 run_pylint_gui
 checkers
 pyreverse

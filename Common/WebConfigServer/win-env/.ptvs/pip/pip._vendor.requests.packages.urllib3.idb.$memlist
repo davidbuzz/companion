@@ -9,7 +9,7 @@ Timeout
 warnings
 __author__
 util
-fields
+packages
 PoolManager
 get_host
 connection
@@ -24,9 +24,9 @@ poolmanager
 response
 ProxyManager
 add_stderr_logger
-_collections
+fields
 filepost
 NullHandler
+_collections
 connectionpool
-packages
 disable_warnings

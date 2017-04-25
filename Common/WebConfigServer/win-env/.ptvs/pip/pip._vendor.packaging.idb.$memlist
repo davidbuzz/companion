@@ -1,10 +1,10 @@
-_structures
 specifiers
+_structures
 __version__
 __email__
 __author__
 version
-__title__
+_compat
 absolute_import
 __all__
 __copyright__
@@ -13,5 +13,5 @@ division
 __summary__
 __about__
 __uri__
-_compat
+__title__
 __license__

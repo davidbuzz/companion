@@ -5,8 +5,8 @@ bar
 __version__
 ceil
 division
-spinner
 counter
+spinner
 helpers
 Progress
 timedelta

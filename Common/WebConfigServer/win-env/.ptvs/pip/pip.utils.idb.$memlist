@@ -1,5 +1,5 @@
-appdirs
 filesystem
+appdirs
 is_installable_dir
 StreamWrapper
 remove_tracebacks
@@ -20,7 +20,7 @@ cStringIO
 input
 ui
 _make_build_dir
-deprecation
+outdated
 build
 get_installed_distributions
 dist_is_editable
@@ -60,7 +60,7 @@ posixpath
 logging
 pkg_resources
 renames
-outdated
+deprecation
 dist_is_local
 untar_file
 os

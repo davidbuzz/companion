@@ -1,7 +1,7 @@
-lint
+alphabeticalattributes
 inject_meta_charset
 whitespace
-alphabeticalattributes
+lint
 _base
 optionaltags
 sanitizer

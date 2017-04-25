@@ -2,8 +2,8 @@ sbcharsetprober
 constants
 charsetgroupprober
 charsetprober
+langhungarianmodel
 universaldetector
-cp949prober
 detect
 chardetect
 euckrfreq
@@ -15,9 +15,9 @@ mbcssm
 eucjpprober
 sbcsgroupprober
 big5prober
-escsm
+utf8prober
 euckrprober
-euctwprober
+escprober
 codingstatemachine
 langhebrewmodel
 sjisprober
@@ -25,7 +25,7 @@ big5freq
 jpcntx
 jisfreq
 gb2312freq
-langhungarianmodel
+cp949prober
 hebrewprober
 version_info
 chardistribution
@@ -33,8 +33,8 @@ langthaimodel
 latin1prober
 compat
 __version__
-utf8prober
-escprober
+escsm
+euctwprober
 langcyrillicmodel
 langbulgarianmodel
 langgreekmodel

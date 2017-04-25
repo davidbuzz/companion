@@ -3,9 +3,9 @@ epoll
 posix
 windows
 interface
-asyncio
 caresresolver
+auto
 common
 select
 twisted
-auto
+asyncio

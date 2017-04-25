@@ -6,7 +6,7 @@ __author__
 Unpickler
 detect
 types
-_objects
+objtypes
 pickles
 load_types
 source
@@ -30,7 +30,7 @@ __doc__
 reload
 HANDLE_FMODE
 dill
-objtypes
+_objects
 citation
 load
 license

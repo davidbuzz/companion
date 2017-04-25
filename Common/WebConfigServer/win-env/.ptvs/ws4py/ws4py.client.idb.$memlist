@@ -1,10 +1,10 @@
-geventclient
+tornadoclient
 __all__
 sha1
 os
 socket
 threadedclient
-tornadoclient
+geventclient
 WebSocketBaseClient
 HandshakeError
 ssl

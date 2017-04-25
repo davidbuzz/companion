@@ -6,7 +6,7 @@ VcsSupport
 os
 ask_path_exists
 logger
-bazaar
+subversion
 get_src_requirement
 VersionControl
 absolute_import
@@ -17,6 +17,6 @@ vcs
 call_subprocess
 shutil
 backup_dir
-subversion
+bazaar
 rmtree
 urllib_parse

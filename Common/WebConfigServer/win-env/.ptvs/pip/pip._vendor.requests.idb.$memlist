@@ -5,7 +5,7 @@ head
 __title__
 __author__
 patch
-adapters
+hooks
 models
 sessions
 Session
@@ -27,7 +27,7 @@ utils
 put
 __build__
 __copyright__
-hooks
+adapters
 HTTPError
 structures
 logging

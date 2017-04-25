@@ -2,12 +2,12 @@ default_etree
 etree
 absolute_import
 unicode_literals
-lxmletree
+pulldom
 division
 treeWalkerCache
 dom
-genshistream
 _base
+genshistream
 getTreeWalker
 sys
-pulldom
+lxmletree

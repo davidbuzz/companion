@@ -1,6 +1,6 @@
 sys
 html
-ureports
+BaseReporter
 locale
 json
 os
@@ -9,7 +9,7 @@ CollectingReporter
 diff_string
 guireporter
 print_function
-BaseReporter
+ureports
 warnings
 text
 CMPS

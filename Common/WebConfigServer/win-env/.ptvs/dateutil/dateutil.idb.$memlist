@@ -2,7 +2,7 @@ easter
 tzwin
 zoneinfo
 tz
-relativedelta
+__version__
 parser
 rrule
-__version__
+relativedelta

@@ -15,7 +15,7 @@ unicode_utils
 run_2to3_on_doctests
 tests
 sandbox
-ssl_support
+depends
 msvc9_support
 distutils
 py27compat
@@ -38,5 +38,5 @@ find_packages
 py31compat
 compat
 __version__
-depends
+ssl_support
 Feature

@@ -2,8 +2,8 @@ __version__
 exc
 WS_KEY
 __author__
-client
 server
+client
 utf8validator
 websocket
 messaging

@@ -1,8 +1,8 @@
 getTreeBuilder
-utils
 ihatexml
+__version__
 unicode_literals
-parse
+division
 tokenizer
 treewalkers
 treebuilders
@@ -11,10 +11,10 @@ constants
 sanitizer
 absolute_import
 __all__
-filters
+utils
 trie
-__version__
-division
+parse
+filters
 inputstream
 serialize
 HTMLParser

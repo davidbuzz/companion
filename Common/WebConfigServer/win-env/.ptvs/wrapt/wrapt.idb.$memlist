@@ -1,5 +1,5 @@
 discover_post_import_hooks
-decorators
+importer
 transient_function_wrapper
 decorator
 __version__
@@ -14,7 +14,7 @@ __version_info__
 when_imported
 CallableObjectProxy
 wrap_object
-importer
+decorators
 function_wrapper
 wrap_object_attribute
 patch_function_wrapper

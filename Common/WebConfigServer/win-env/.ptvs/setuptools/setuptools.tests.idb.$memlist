@@ -1,5 +1,5 @@
 test_egg_info
-test_sandbox
+TestDistro
 Extension
 test_develop
 test_upload_docs
@@ -13,16 +13,16 @@ TestDepends
 z
 pytest
 test_dist_info
-DistutilsSetupError
+contexts
 DistutilsOptionError
 textwrap
+environment
 test_msvc9compiler
-test_build_ext
 TestCommandTests
 dep
 distutils
 test_sdist
-TestDistro
+test_sandbox
 server
 test_windows_wrappers
 sys
@@ -38,8 +38,8 @@ test_find_packages
 test_bdist_egg
 y
 x
-contexts
+DistutilsSetupError
 LooseVersion
 DistutilsPlatformError
-environment
+test_build_ext
 Feature

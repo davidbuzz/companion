@@ -8,7 +8,7 @@ serial_for_url
 to_bytes
 ValueError
 portNotOpenError
-win32
+sys
 SerialTimeoutException
 importlib
 memoryview
@@ -22,7 +22,7 @@ protocol_handler_packages
 iterbytes
 False
 serialjava
-AttributeError
+aio
 SerialException
 CR
 PARITY_MARK
@@ -32,7 +32,7 @@ io
 hasattr
 unicode
 PARITY_ODD
-sys
+win32
 rfc2217
 rs485
 SerialBase
@@ -49,7 +49,7 @@ ImportError
 XOFF
 PosixPollSerial
 EIGHTBITS
-aio
+AttributeError
 urlhandler
 XON
 PARITY_NAMES

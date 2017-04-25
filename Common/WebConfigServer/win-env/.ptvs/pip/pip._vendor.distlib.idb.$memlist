@@ -1,6 +1,6 @@
 __version__
 manifest
-_backport
+metadata
 logger
 markers
 version
@@ -11,8 +11,8 @@ compat
 resources
 DistlibException
 database
-metadata
 util
+_backport
 index
 locators
 wheel

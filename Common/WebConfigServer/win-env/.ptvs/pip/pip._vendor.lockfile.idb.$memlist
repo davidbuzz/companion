@@ -2,7 +2,7 @@ sys
 time
 NotLocked
 LockTimeout
-symlinklockfile
+sqlitelockfile
 _fl_helper
 LinkFileLock
 SQLiteFileLock
@@ -19,8 +19,8 @@ _mlf
 UnlockError
 LockError
 pidlockfile
+symlinklockfile
 linklockfile
-sqlitelockfile
 LockFile
 warnings
 _llf

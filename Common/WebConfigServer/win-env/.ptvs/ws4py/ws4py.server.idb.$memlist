@@ -1,4 +1,4 @@
 wsgirefserver
 cherrypyserver
-geventserver
 wsgiutils
+geventserver
