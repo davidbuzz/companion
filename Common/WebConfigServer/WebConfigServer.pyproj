@@ -36,33 +36,16 @@
     <Content Include="static\swapper.png" />
     <Content Include="static\testtriangle.png" />
     <Content Include="static\wifi.png" />
-    <Content Include="tools\deploy10.bat" />
     <Content Include="tools\etc-supervisor-conf.d-WebConfigServer.conf" />
     <Content Include="tools\WebConfigServer.json" />
     <Content Include="tools\WebConfigServer.windows.json" />
-    <Content Include="tools\WebConfigServer_notifier.txt" />
-    <Content Include="tools\WebConfigServer_supervisor.txt" />
-    <Content Include="tools\example_cron.txt" />
-    <Content Include="tools\example_fstab.txt" />
-    <Content Include="tools\hostapd.conf" />
-    <Content Include="tools\leds.windows.json" />
     <Content Include="tools\masterwifi.json" />
     <Content Include="tools\masterwifi.windows.json" />
     <Content Include="tools\my_mac_serial.json" />
     <Content Include="tools\my_mac_serial.windows.json" />
-    <Content Include="tools\network-pre.conf" />
-    <Content Include="tools\on_reboot.sh" />
     <Content Include="tools\plink.exe" />
-    <Content Include="tools\post-up-wlan1.sh" />
     <Content Include="tools\pscp.exe" />
     <Content Include="tools\putty.exe" />
-    <Content Include="tools\start_wifi_drivers.sh" />
-    <Content Include="tools\testwifi.env" />
-    <Content Include="tools\testwifi.json" />
-    <Content Include="tools\undeploy.bat" />
-    <Content Include="tools\wifi-blacklist.conf" />
-    <Content Include="tools\wifi_scan.sh" />
-    <Content Include="tools\wifi_scan.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="file_utils.py" />
@@ -71,10 +54,6 @@
     <Compile Include="serial_utils.py" />
     <Compile Include="SimplePriorityQueue.py" />
     <Compile Include="stdoutcontext.py" />
-    <Compile Include="tools\heartbeat.py" />
-    <Compile Include="tools\wifis_available.py" />
-    <Compile Include="tools\wifitest.py" />
-    <Compile Include="tools\write_hostapd_conf.py" />
     <Compile Include="tornado_ws_server.py" />
   </ItemGroup>
   <ItemGroup>
