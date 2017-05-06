@@ -25,6 +25,7 @@ class SimplePriorityQueue(object):
                     ", ".join(map(lambda (i, q): "%d:%d"%(i, q.qsize()), 
                                 enumerate(self.queues))))
 
+    # this impl of qsize() does not work on OSX dies to a known python issue, but linux, windows etc is ok. TODO rework this to not use qsize()
     qsize = lambda(self): sum(map(lambda q: q.qsize(), self.queues))
 
     def get(self, block=True, timeout=None):
