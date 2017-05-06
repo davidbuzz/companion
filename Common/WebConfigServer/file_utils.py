@@ -6,11 +6,16 @@ from os.path import isfile, join, getmtime
 import re
 import time
 
+# this is used for non-windows platforms with posix filesystems ( ie 1/2/3/4 )
+AppRoot = '/root/WebConfigServer'
+# and this is for windows:   1\\2\\3\\4
+WinAppRoot = 'X:\\WebConfigServer'
+
 def read_config():
         if sys.platform == 'win32':
-            filename = 'X:\\WebConfigServer\\conf\\WebConfigServer.windows.json'
+            filename = WinAppRoot+'\\conf\\WebConfigServer.windows.json'
         else:
-            filename = '/root/WebConfigServer/conf/WebConfigServer.json'
+            filename = AppRoot+'/conf/WebConfigServer.json'
 
         #return json.loads(file_get_contents(filename))
 
@@ -28,7 +33,7 @@ def read_config():
         if not "majorversion" in config:
             config['majorversion'] =  "...insert release version number here......."
         if sys.platform != 'win32':
-            config['minorversion'] =  time.strftime("%Y/%m/%d, %H:%M:%S", time.localtime(getmtime('/persist/lastminorupdate.txt')))
+            config['minorversion'] =  time.strftime("%Y/%m/%d, %H:%M:%S", time.localtime(getmtime(AppRoot+'/lastminorupdate.txt')))
         else:
             config['minorversion'] = "not supported on windows"
 
@@ -37,18 +42,18 @@ def read_config():
 
 def read_master_wifi():
         if sys.platform == 'win32':
-            filename = 'X:\\WebConfigServer\\conf\\masterwifi.windows.json'
+            filename = WinAppRoot+'\\conf\\masterwifi.windows.json'
         else:
-            filename = '/root/WebConfigServer/conf/masterwifi.json'
+            filename = AppRoot+'/conf/masterwifi.json'
 
         return json.loads(file_get_contents(filename))
 
 def write_master_wifi(json_data):
         if sys.platform == 'win32':
-            dirname = 'X:\\WebConfigServer\\conf\\'
+            dirname = WinAppRoot+'\\conf\\'
             filename = dirname+'masterwifi.windows.json'
         else:
-            dirname = '/root/WebConfigServer/conf/'
+            dirname = AppRoot+'/conf/'
             filename = dirname+'masterwifi.json'
 
         cleaned = json.dumps(json_data,indent=2,sort_keys=True)       # json->string
@@ -60,10 +65,10 @@ def write_master_wifi(json_data):
 
 def write_config(json_data):
         if sys.platform == 'win32':
-            dirname = 'X:\\WebConfigServer\\conf\\'
+            dirname = WinAppRoot+'\\conf\\'
             filename = dirname+'WebConfigServer.windows.json'
         else:
-            dirname = '/root/WebConfigServer/conf/'
+            dirname = AppRoot+'/conf/'
             filename = dirname+'WebConfigServer.json'
 
         old = read_config() # for something to compage against before we change it.
@@ -111,10 +116,9 @@ def file_get_contents(filename):
 # ignore ones containing in .done in the name
 def check_crontab_queue():
         if sys.platform == 'win32':
-            dirname = 'X:\\WebConfigServer\\cronqueue\\'
+            dirname = WinAppRoot+'\\cronqueue\\'
         else:
-            dirname = '/root/WebConfigServer/cronqueue/'
-            #filename = '/persist/crons/'
+            dirname = AppRoot+'/cronqueue/'
         for f in os.listdir(dirname):
           fname = join(dirname, f);
           if isfile(fname) and (fname.find(".json") >= 0) and (fname.find(".done") == -1) :
@@ -191,7 +195,7 @@ def do_interfaces_file():
     iface wlan1 inet static
        address 10.10.10.1
        netmask 255.255.255.0
-       post-up /root/WebConfigServer/tools/post-up-wlan1.sh > /persist/hostapd-postup.log &
+       post-up '''+AppRoot+'''/tools/post-up-wlan1.sh > /blah/hostapd-postup.log &
 
     up iptables-restore < /etc/iptables.ipv4.nat
     '''
@@ -216,10 +220,10 @@ def _getMacAddress():
 def read_my_mac_address():
 
     if sys.platform == 'win32':
-        dirname = 'X:\\WebConfigServer\\conf\\'
+        dirname = WinAppRoot+'\\conf\\'
         filename = dirname+'my_mac_serial.windows.json'
     else:
-        dirname = '/root/WebConfigServer/conf/'
+        dirname = AppRoot+'/conf/'
         filename = dirname+'my_mac_serial.json'
 
     mymac = file_get_contents(filename)
@@ -228,12 +232,10 @@ def read_my_mac_address():
 def write_my_mac_address(mac=None):
 
     if sys.platform == 'win32':
-        rootfolder = 'X:\\WebConfigServer\\'
-        conffolder = rootfolder+'conf\\'
+        conffolder = WinAppRoot+'\\conf\\'
         thefile = 'my_mac_serial.windows.json'
     else:
-        rootfolder = '/root/WebConfigServer/'
-        conffolder = rootfolder+'conf/'
+        conffolder = AppRoot+'/conf/'
         thefile = 'my_mac_serial.json'
 
 
@@ -250,8 +252,7 @@ def write_my_mac_address(mac=None):
 def change_leds(r=None,g=None,b=None):
 
     if sys.platform == 'win32':
-        rootfolder = 'X:\\WebConfigServer\\'
-        folder = rootfolder+'tools\\'
+        folder = WinAppRoot+'\\tools\\'
         thefile = 'leds.windows.json'
     else:
         folder = '/tmp/'
