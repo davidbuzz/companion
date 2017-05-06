@@ -1,0 +1,22 @@
+#first make sure you are in the WebConfigServer folder, where this readme is.
+then see if you already have a suitable virtualenv for your platform in the repository.  eg linuxenv, osxenv, etc.    If the pre-created virtual-env exists, try to "use" it as-is first.    with ( eg): 
+'source osxenv/bin/activate'
+then see which 'python' is active with:
+'which python'  
+it should show that you are running the one from inside the blah/WebConfigServer/osxenv/bin/python
+then try to execute the main script:
+'python main.py'
+
+If it starts, great!  If not. read on.
+
+If you don't have a suitable ( working) virtualenv for your platform, create one like this:
+mkdir osxenv
+virtualenv osxenv
+( should say bhah blah '...Installing setuptools, pip, wheel...done' ) 
+source osxenv/bin/activate
+ok, so you now have an *empty* environment, and we need to add all of the dependancies for WebConfigServer into this folder using this command:
+pip install -r requirements.txt
+# great, if that worked, it should have finished with a line saying "Successfully installed astroid-1.4.5 backports-abc-0.4 backports.ssl-match-hostname-3.5.0.1 bcrypt-2.0.0 certifi-2016.2.28 cffi-1.7.0 colorama-0.3.7 configparser-3.5.0 dill-0.2.5 lazy-object-proxy-1.2.2 multiprocess-0.70.4 pycparser-2.14 pylint-1.5.5 pyreadline-2.1 pyserial-3.0.1 python-dateutil-2.5.3 requests-2.11.1 setproctitle-1.1.10 singledispatch-3.4.0.3 tornado-4.3 websocket-client-0.37.0 wrapt-1.10.8 ws4py-0.3.5"    or similar.
+you're done with setting up the virtualenv, you can now try to execute the main script:         
+'python main.py'
+
