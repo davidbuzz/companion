@@ -1,8 +1,5 @@
 {
   "basicauth": "apsync:securepasswords", 
-  "failtime": "300", 
-  "portal1": "wss://127.0.0.1:9999/ws/", 
-  "portal2": "wss://www.someremoteserver.com/ws/", 
   "pwd1": "yourworkwifi", 
   "pwd2": "wwxxyyzz", 
   "src": "webpage", 
