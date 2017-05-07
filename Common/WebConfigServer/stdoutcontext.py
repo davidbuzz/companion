@@ -2,6 +2,11 @@ from contextlib import contextmanager
 import sys
 import time
 import os
+if  sys.platform == 'win32':
+    from file_utils import WinAppRoot  
+else:
+    from file_utils import AppRoot  
+
 
 class CustomPrint():
     def __init__(self, stdout, pre, logfilename):
@@ -10,9 +15,9 @@ class CustomPrint():
         self.linecount = 0;
         self.logfilename = logfilename
         if sys.platform == 'win32':
-            self.dirname = 'X:\\WebConfigServer\\logs\\'
+            self.dirname = WinAppRoot+'\\logs\\'
         else:
-            self.dirname = '/var/log/'
+            self.dirname =  AppRoot+'/logs/'
         self.reopen()  # always start a clean startup with a clean log , it's easier. 
 
     def write(self, text):

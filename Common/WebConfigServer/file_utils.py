@@ -2,16 +2,22 @@ import sys
 import os
 import json
 from os import listdir, rename
-from os.path import isfile, join, getmtime
+from os.path import isfile, join, getmtime, dirname, realpath
 import re
 import time
 
-# this is used for non-windows platforms with posix filesystems ( ie 1/2/3/4 )
-AppRoot = '/root/WebConfigServer'
-# and this is for windows:   1\\2\\3\\4
-WinAppRoot = 'X:\\WebConfigServer'
+# determine current directory, as it's the "root" of the Web
+if  sys.platform == 'win32':
+    # and this is for windows:   1\\2\\3\\4
+    WinAppRoot = dirname(realpath(__file__))
+    #  ensure double back slashes on windows, as that the convention we are using.
+    WinAppRoot = WinAppRoot.replace('\\', '\\\\') # replace a single backslash with a double, trust me.  :-) 
+else:
+    # this is used for non-windows platforms with posix filesystems ( ie 1/2/3/4 )
+    AppRoot =  dirname(realpath(__file__))   #eg '/root/WebConfigServer'
 
 def read_config():
+
         if sys.platform == 'win32':
             filename = WinAppRoot+'\\conf\\WebConfigServer.windows.json'
         else:
