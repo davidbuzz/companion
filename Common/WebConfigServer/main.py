@@ -37,57 +37,26 @@ if __name__ == '__main__':
 
     sys.stdout = CustomPrint(sys.stdout,"MAIN> ","WebConfigServer_main.log")
 
-    # we start here and go up.
-    #PORTNUM = 23456
+    # create a bunch of named queues for each of the potential sub-processes we'll monitor.
+    # in and out are a pair, we use pretty much everywhere.
+    def queue_pair(x):
+        return SimplePriorityQueue(x), SimplePriorityQueue(x)
+    # 'input' -> we send data TO the serial input device, and  'output' -> we get from it 
+    lowserial_input_queue, lowserial_output_queue = queue_pair(2) # out serial byte handler ( fast serial no blocking ) 
+    serialpacket_input_queue, serialpacket_output_queue = queue_pair(2)  # out serial packet handler ( slow, higher level )
+    portalclient_input_queue, portalclient_output_queue = queue_pair(2) # our webclient
+    web_input_queue, web_output_queue  = queue_pair(2)  # our local webserver also has queues for the web and websockets  ( config tools and monitoring ) 
+    slow_input_queue, slow_output_queue = queue_pair(2) # can be things line cron, wifi tests, slow activities
+    sim_input_queue, sim_output_queue = queue_pair(2)   #  PORTAL or other simulator, not normally used for JSON, just heartbeats.
 
-    #import logging
-    #logger = multiprocessing.log_to_stderr()
-    #logger.setLevel(multiprocessing.SUBDEBUG)
-
-
-
-    # serial port handling  ... bytes to packets..
-    lowserial_input_queue = SimplePriorityQueue(2) #SimplePriorityQueue(2) #multiprocessing.Queue()   # we send data TO the serial input device
-    lowserial_output_queue = SimplePriorityQueue(2) #multiprocessing.Queue()  # get from
-    # .. and packets to interactions.
-    serialpacket_input_queue = SimplePriorityQueue(2) #multiprocessing.Queue()   # we send data TO the serial input device
-    serialpacket_output_queue = SimplePriorityQueue(2) #multiprocessing.Queue()  # get from
-
-
-    # our webclient
-    portalclient_input_queue = SimplePriorityQueue(2) #multiprocessing.Queue()      # we send data TO the portal client device
-    portalclient_output_queue = SimplePriorityQueue(2) #multiprocessing.Queue()     # get from
-
-
-    # our local webserver also has queues for the web interface  ( config tools and monitoring ) 
-
-    web_input_queue = SimplePriorityQueue(2) #multiprocessing.Queue()      # we send data TO the local HTTP and websockets process
-    web_output_queue = SimplePriorityQueue(2) #multiprocessing.Queue()     # get from 
-
-
-    # our slow-actions thread also has queues for the interface  ( cron, wifi tests, daily actions, etc ) 
-    slow_input_queue = SimplePriorityQueue(2) #multiprocessing.Queue()      # we send data TO the 'slow actions' process
-    slow_output_queue = SimplePriorityQueue(2) #multiprocessing.Queue()     # get from 
-
-    # these queues are NOT for normal JSON comms... its just so we get a regular 'ping' to tell us the PORTAL simulator is still running ok. 
-    sim_input_queue = SimplePriorityQueue(2) #multiprocessing.Queue()     #unused, just here for consistency 
-    sim_output_queue = SimplePriorityQueue(2) #multiprocessing.Queue()     # get pings only from... 
-
-    # for sharing key data ( the gDEVICES hash from the serialrw module ) 
+    # this is an example of how we can have a python dict that's available to *all* processes, if we want.   eg a list of connected clients or something.
+    # not really used right now though. 
     manager = multiprocessing.Manager()
     gDEVICES = manager.dict()
 
     delay = 1.0
     smalldelay = 0.1
     last_check_time = 0
-
-    #print("sleeping 1 for attach of debugger")
-    #time.sleep(1)
-    #webclient = None
-    #webserver = None
-    #slowserver = None
-    #gw = None
-    #portalwebserver = None
 
     # another way of looking at them...
     processes = {'webclient':None,'webserver':None,'slowserver':None,'lowgw':None,'packetgw':None,'portalwebserver':None}
