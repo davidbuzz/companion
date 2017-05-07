@@ -1,0 +1,3 @@
+[submodule "Common/openmct"]
+	path = Common/openmct
+	url = https://github.com/nasa/openmct.git
