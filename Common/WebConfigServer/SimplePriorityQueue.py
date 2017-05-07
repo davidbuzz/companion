@@ -18,22 +18,17 @@ class SimplePriorityQueue(object):
     def __init__(self, num_priorities=2): #, default_sleep=.2):
         self.num_priorities = num_priorities
         self.queues = []
-        self.queuesizes = [] #  qsize() does not work on OSX so we manually maintain that state here.
         #self.default_sleep = default_sleep
         for i in range(0, num_priorities):
             self.queues.append(ProcessQueue())
-            self.queuesizes.append(0) # initial size of queue
 
     def __repr__(self):
-        return "<Queue with %d priorities, sizes: %s>"%(len(self.queues), 
-                    ", ".join(map(lambda (i, q): "%d:%d"%(i, q.qsize()), 
+        return "<Queue with %d priorities  %s>"%(len(self.queues), 
+                    ", ".join(map(lambda (i, q): "%d "%(i), 
                                 enumerate(self.queues))))
 
     # this impl of qsize() does not work on OSX dies to a known python issue, but linux, windows etc is ok. TODO rework this to not use qsize()
     #qsize = lambda(self): sum(map(lambda q: q.qsize(), self.queues))
-    def qsize(self):
-            return  sum ( self.queuesizes ) 
-
 
     def get(self, block=True, timeout=None):
         start = datetime.utcnow()
@@ -43,10 +38,8 @@ class SimplePriorityQueue(object):
                 q = self.queues[i]
                 try:
                     x =  q.get(block=False)
-                    self.queuesizes[i] -= 1
                     return x
                 except Empty:
-                    self.queuesizes[i] = 0
                     pass
             if not block:
                 raise Empty
@@ -75,14 +68,13 @@ class SimplePriorityQueue(object):
             raise LookupError 
         # Block and timeout don't mean much here because we never set maxsize
         x = self.queues[priority].put(obj)
-        self.queuesizes[priority] += 1
         return x
 
 # below here is a basic test suite for the SimplePriorityQueue, try it with 'python SimplePriorityQueue.py' :-) 
 if __name__ == '__main__':
     input_queue = SimplePriorityQueue(2) # 2 priorities.
 
-    if input_queue.qsize() == 0:
+    if input_queue.empty() == True:
         print "OK: empty queue apears to empty" 
     else:
         print "ERR"
@@ -90,7 +82,7 @@ if __name__ == '__main__':
     testdata = 'something to test';  
     priority = 1;
     input_queue.put(priority,testdata)
-    if  input_queue.qsize() == 1:
+    if  input_queue.empty() == False:
         print "OK: queue has ONE entry" 
     else:
         print "ERR"
@@ -98,7 +90,7 @@ if __name__ == '__main__':
     testdata = 'something high priority';  
     priority = 0;
     input_queue.put(priority,testdata)
-    if  input_queue.qsize() == 2:
+    if  input_queue.empty() == False:
         print "OK: queue has TWO entries" 
     else:
         print "ERR"
@@ -106,7 +98,7 @@ if __name__ == '__main__':
     time.sleep(1)
 
     # should give us the high priority one first, as it's higher priority.
-    x = input_queue.get()
+    x = input_queue.get_nowait()
     if  x == 'something high priority':
         print "OK: queue removed an item ok, and it was the high-priority one." 
     else:
@@ -120,6 +112,30 @@ if __name__ == '__main__':
         print "ERR exception not triggered"
     except LookupError as e:
         print "OK: queue triggered exception as it should have on bad priority"
+
+
+    # empty the queue, and then over-empty it.
+        input_queue.put(1,'erterta')
+        input_queue.put(1,'ertertb')
+        input_queue.put(0,'ertertc')
+        input_queue.put(0,'ertertd')
+    x = input_queue.get_nowait()
+    x = input_queue.get_nowait()
+    x = input_queue.get_nowait()
+    x = input_queue.get_nowait()
+    x = input_queue.get_nowait()
+    try:
+        x = input_queue.get_nowait()
+    except Empty as e:
+        print "queue is Empty as it should be"
+
+    #x = input_queue.get_nowait()
+    if  input_queue.empty() == True :
+        print "OK: queue went to zero, but not beyond." 
+    else:
+        print "ERR"
+
+
      
     # other unit tests could be add ed here.
     print "If you see ERR anywhere except this line, there was a problem with the test suite"

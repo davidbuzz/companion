@@ -69,17 +69,16 @@ if __name__ == '__main__':
     while ( True ):   # are we running with a simulated PORTAL server, or an an actual one? 
 
         config = read_config();
-
+        # this allows us to re-read the 'portal' values from the config, if they exist, and pass updated versions of them to the procese/s that needs it.
         try: 
-            #portalurl1 = 'wss://'+config['portal1']+'/ws/'
-            #portalurl2 = 'wss://'+config['portal2']+'/ws/'
             portalurl1 = config['portal1']
             portalurl2 = config['portal2']
-            #portalurl='ws://127.0.0.1:9999/ws/'  # unsecure version is just ws: not wss:
         except KeyError as e:   # right now we don't really care if 'portal1' or 'portal2' is in the data rom the client, so let it slide if it's not.
+            portalurl1 = ''
+            portalurl2 = ''
             pass
 
-        
+        # (re)start the process if it's not already running        
         if processes['webclient'] == None:
             try: 
                 # lets try to start the websocket CLIENT  ...
@@ -163,6 +162,7 @@ if __name__ == '__main__':
 
         # check all the lists if all features are disabled...? 
         #queue_check_list = [lowserial_output_queue,serialpacket_output_queue,portalclient_output_queue,web_output_queue,slow_output_queue,sim_output_queue]
+
         # absolute minimal list of queues to check: 
         queue_check_list = [ web_output_queue ]
 
@@ -229,21 +229,17 @@ if __name__ == '__main__':
 
         time.sleep(0.1)        
 
-        # TIPS:
-        ## the serial thread passes outgoing data to the PORTAL client primarily, and the web server so that any connected webclient can see the debug stuff
-        ## data FROM the portal client ( and thus from the PORTAL server ) goes to the serial and http server locations
-        ## data FROM the local HTTP server ( representing the browser and user ) , then this is SIMULATION data, and we know where to route it to ( serial or the portal )
-        #
+
 
         # just some debug / display printing....
-        allzeros = True
+        allzeros = True # False to verbose output when queues are empty. 
         maybe_print = "\n"
         for _thisqueue in queue_check_list:
             x = namestr(_thisqueue, globals()) # pull variable name from introspection of object
             y = list(x) # an explicit copy
             y.sort()    # so we can pick the right one by its position
-            maybe_print = maybe_print+"current queue: "+str(y[1])+"            size: "+str(_thisqueue.qsize())+"\n"
-            if _thisqueue.qsize() > 0:
+            maybe_print = maybe_print+"current queue: "+str(y[1]) #+"            size: "+str(_thisqueue.qsize())+"\n"
+            if _thisqueue.empty() != False:
                 allzeros = False
 
         if not allzeros:
@@ -257,7 +253,7 @@ if __name__ == '__main__':
             while not _thisqueue.empty():   # while or if? # first method is 'if'. 
                 s = _thisqueue.get_nowait()
                 (target,data,priority) = json_unwrap_with_target(s)
-
+                #print "(target,data,priority) : %s %s %s )" % (target,data,priority)
                 if target != False:
                     print "Routing some packet OUT with destination: "+target
                     #TODO check if the queue we came from is the queue we are going to put it into, and drop it to prevent loops...
