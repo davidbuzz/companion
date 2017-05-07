@@ -100,11 +100,15 @@ if __name__ == '__main__':
     while ( True ):   # are we running with a simulated PORTAL server, or an an actual one? 
 
         config = read_config();
-        #portalurl1 = 'wss://'+config['portal1']+'/ws/'
-        #portalurl2 = 'wss://'+config['portal2']+'/ws/'
-        portalurl1 = config['portal1']
-        portalurl2 = config['portal2']
-        #portalurl='ws://127.0.0.1:9999/ws/'  # unsecure version is just ws: not wss:
+
+        try: 
+            #portalurl1 = 'wss://'+config['portal1']+'/ws/'
+            #portalurl2 = 'wss://'+config['portal2']+'/ws/'
+            portalurl1 = config['portal1']
+            portalurl2 = config['portal2']
+            #portalurl='ws://127.0.0.1:9999/ws/'  # unsecure version is just ws: not wss:
+        except KeyError as e:   # right now we don't really care if 'portal1' or 'portal2' is in the data rom the client, so let it slide if it's not.
+            pass
 
         
         if processes['webclient'] == None:

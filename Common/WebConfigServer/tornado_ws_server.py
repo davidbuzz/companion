@@ -48,10 +48,16 @@ class IndexHandler(tornado.web.RequestHandler):
         vars = read_master_wifi()
 
         
-
+        #we blank these for now, unneeded but still in template. 
+        config['portal1'] = '';
+        config['portal2'] = '';
+        config['failtime'] = '';
+        config['majorversion'] = '';
+        config['minorversion'] = '';
         self.render("index.template.html", PORTAL1 = config['portal1'] , PORTAL2 = config['portal2'], 
             SSID1 = config['ssid1'] , SSID2 = config['ssid2'] , PASSWORD1 = config['pwd1'],
-            PASSWORD2 = config['pwd2'], FAILOVERTIME = config['failtime'],
+            PASSWORD2 = config['pwd2'], 
+            FAILOVERTIME = config['failtime'],
             BASICAUTH =  config['basicauth'],
             MAJORVERSION = config['majorversion'],
             MINORVERSION = config['minorversion'],
@@ -268,7 +274,7 @@ def webmain(inq, outq):
     # OR: 
     # with callback support: 
     httpServer = tornado.httpserver.HTTPServer(app, ssl_options = { "certfile": os.path.join("certs/certificate.pem"),  "keyfile": os.path.join("certs/privatekey.pem")}  )
-    httpServer.listen(443)
+    httpServer.listen(4443)
     print("Listening on port:", 443)
     mainLoop = tornado.ioloop.IOLoop.instance()
     ## adjust the scheduler_interval according to the frames sent by the serial port
